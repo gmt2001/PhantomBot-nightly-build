@@ -54,10 +54,15 @@ cp -f ${MASTER}/dist/PhantomBot*zip ${HISTORICAL}/${BUILD_DATED}
 PBFOLDER=PhantomBot-${PB_VERSION}-NB-$(date +%Y%m%d)
 
 cd ${MASTER}/dist/
-zip -r ${BUILDS}/${LIN_BUILD} ${PBFOLDER} -x 'java-runtime/*' -x 'java-runtime-macos/*' -x 'launch.bat'
-zip -r ${BUILDS}/${WIN_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime-macos/*' -x 'launch.sh' -x 'launch-service.sh'
-zip -r ${BUILDS}/${MAC_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime/*' -x 'launch.bat'
-zip -r ${BUILDS}/${ARM_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime/*' -x 'java-runtime-macos/*' -x 'launch.bat'
+
+echo "Lin zip"
+zip -r ${BUILDS}/${LIN_BUILD} ${PBFOLDER} -x '*java-runtime/*' -x '*java-runtime-macos/*' -x '*launch.bat'
+echo "Win zip"
+zip -r ${BUILDS}/${WIN_BUILD} ${PBFOLDER} -x '*java-runtime-linux/*' -x '*java-runtime-macos/*' -x '*launch.sh' -x '*launch-service.sh'
+echo "Mac zip"
+zip -r ${BUILDS}/${MAC_BUILD} ${PBFOLDER} -x '*java-runtime-linux/*' -x '*java-runtime/*' -x '*launch.bat'
+echo "Arm zip"
+zip -r ${BUILDS}/${ARM_BUILD} ${PBFOLDER} -x '*java-runtime-linux/*' -x '*java-runtime/*' -x '*java-runtime-macos/*' -x '*launch.bat'
 
 cd ${BUILDS}
 if [[ "${LAST_REPO_VERSION}" = "${REPO_VERSION}" ]]; then
