@@ -36,12 +36,15 @@ jobs:
         brew install ./ant.rb
         rm -f ant.rb
       if: startsWith(matrix.os, 'macOS-')
-    - name: Build with Ant
-      if: ! startsWith(matrix.os, 'windows-')
+    - name: Build with Ant (Linux)
+      if: startsWith(matrix.os, 'ubuntu-')
       run: ant -noinput -buildfile ${GITHUB_WORKSPACE}/../PhantomBot/build.xml test
-    - name: Build with Ant
+    - name: Build with Ant (Windows)
       if: startsWith(matrix.os, 'windows-')
       run: ant -noinput -buildfile %GITHUB_WORKSPACE%/../PhantomBot/build.xml test
+    - name: Build with Ant (macOS)
+      if: startsWith(matrix.os, 'macOS-')
+      run: ant -noinput -buildfile ${GITHUB_WORKSPACE}/../PhantomBot/build.xml test
   dryrun:
     name: Dry run on ubuntu-latest with JDK 11.0.4
     runs-on: ubuntu-latest
