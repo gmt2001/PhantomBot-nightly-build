@@ -37,7 +37,11 @@ jobs:
         rm -f ant.rb
       if: startsWith(matrix.os, 'macOS-')
     - name: Build with Ant
+      if: ! startsWith(matrix.os, 'windows-')
       run: ant -noinput -buildfile ${GITHUB_WORKSPACE}/../PhantomBot/build.xml test
+    - name: Build with Ant
+      if: startsWith(matrix.os, 'windows-')
+      run: ant -noinput -buildfile %GITHUB_WORKSPACE%/../PhantomBot/build.xml test
   dryrun:
     name: Dry run on ubuntu-latest with JDK 11.0.4
     runs-on: ubuntu-latest
