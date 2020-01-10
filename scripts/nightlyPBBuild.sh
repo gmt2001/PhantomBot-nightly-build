@@ -78,6 +78,7 @@ git commit -m "${BUILD_STR}"
 if [[ "${DRY_RUN}" = "false" ]]; then
     git push "https://${GITHUB_ACTOR}:${TOKEN_GITHUB}@github.com/${GITHUB_REPOSITORY}.git"
 else
+    cd ${BUILDS}
     echo "$(ls)"
     echo ""
     echo "$(unzip -l ${ARM_BUILD})"
