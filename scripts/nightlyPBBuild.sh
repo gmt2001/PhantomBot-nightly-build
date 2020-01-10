@@ -43,7 +43,7 @@ git clone https://github.com/PhantomBot/PhantomBot.git
 cd PhantomBot
 PB_VERSION=$(grep "property name=\"version\"" build.xml | perl -e 'while(<STDIN>) { ($ver) = $_ =~ m/\s+<property name=\"version\" value=\"(.*)\" \/>/; } print $ver;')
 ant -noinput -buildfile build.xml distclean clean
-ant -noinput -buildfile build.xml -Dnightly=nightly_build -Dversion=${PB_VERSION}-NB-$(date +%Y%m%d) dist
+ant -noinput -buildfile build.xml -Dbuildtype=nightly_build -Dversion=${PB_VERSION}-NB-$(date +%Y%m%d) dist
 if [[ $? -ne 0 ]]; then
     exit 1
 fi
