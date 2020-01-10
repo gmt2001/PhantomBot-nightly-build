@@ -48,12 +48,12 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 REPO_VERSION=$(git rev-parse --short HEAD)
-cp -f ${MASTER}/PhantomBot/dist/PhantomBot*zip ${BUILDS}/${BUILD}
-cp -f ${MASTER}/PhantomBot/dist/PhantomBot*zip ${HISTORICAL}/${BUILD_DATED}
+cp -f ${MASTER}/dist/PhantomBot*zip ${BUILDS}/${BUILD}
+cp -f ${MASTER}/dist/PhantomBot*zip ${HISTORICAL}/${BUILD_DATED}
 
 PBFOLDER=PhantomBot-${PB_VERSION}-NB-$(date +%Y%m%d)
 
-cd ${MASTER}/PhantomBot/dist/
+cd ${MASTER}/dist/
 zip -r ${BUILDS}/${LIN_BUILD} ${PBFOLDER} -x 'java-runtime/*' -x 'java-runtime-macos/*' -x 'launch.bat'
 zip -r ${BUILDS}/${WIN_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime-macos/*' -x 'launch.sh' -x 'launch-service.sh'
 zip -r ${BUILDS}/${MAC_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime/*' -x 'launch.bat'
@@ -69,6 +69,8 @@ cat builds.md | perl -e 'while(<STDIN>) { if ($_ =~ /------/ ) { print $_; print
 head -25 builds.new > builds.md
 rm -f builds.new
 echo ${REPO_VERSION} > last_repo_version
+git config user.email "PhantomBot-Nightly-build@github-actions.local"
+git config user.name "GitHub-Actions/PhantomBot/nightly-build"
 git add ${BUILD} ${LIN_BUILD} ${WIN_BUILD} ${MAC_BUILD} ${ARM_BUILD} historical/${BUILD_DATED} builds.md last_repo_version
 cd ${BUILDS}/historical
 find . -mtime +20 -exec git rm {} \;
