@@ -39,11 +39,11 @@ LAST_REPO_VERSION=$(cat last_repo_version)
 
 cd ${HOME}
 
-git clone https://github.com/PhantomBot/PhantomBot.git 2>/dev/null 1>&2
+git clone https://github.com/PhantomBot/PhantomBot.git
 cd PhantomBot
 PB_VERSION=$(grep "property name=\"version\"" build.xml | perl -e 'while(<STDIN>) { ($ver) = $_ =~ m/\s+<property name=\"version\" value=\"(.*)\" \/>/; } print $ver;')
-ant distclean clean 2>/dev/null 1>&2
-ant -Dnightly=nightly_build -Dversion=${PB_VERSION}-NB-$(date +%Y%m%d) 2>/dev/null 1>&2
+ant -noinput -buildfile build.xml distclean clean
+ant -noinput -buildfile build.xml -Dnightly=nightly_build -Dversion=${PB_VERSION}-NB-$(date +%Y%m%d) dist
 if [[ $? -ne 0 ]]; then
     exit 1
 fi
@@ -60,7 +60,6 @@ zip -r ${BUILDS}/${MAC_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-run
 zip -r ${BUILDS}/${ARM_BUILD} ${PBFOLDER} -x 'java-runtime-linux/*' -x 'java-runtime/*' -x 'java-runtime-macos/*' -x 'launch.bat'
 
 cd ${BUILDS}
-git pull 2>/dev/null 1>&2
 if [[ "${LAST_REPO_VERSION}" = "${REPO_VERSION}" ]]; then
     export BUILD_STR="${COMMITSTR} (Repo: ${REPO_VERSION}) (No Changes)"
 else
@@ -70,14 +69,14 @@ cat builds.md | perl -e 'while(<STDIN>) { if ($_ =~ /------/ ) { print $_; print
 head -25 builds.new > builds.md
 rm -f builds.new
 echo ${REPO_VERSION} > last_repo_version
-git add ${BUILD} ${LIN_BUILD} ${WIN_BUILD} ${MAC_BUILD} ${ARM_BUILD} historical/${BUILD_DATED} builds.md last_repo_version 2>/dev/null 1>&2
+git add ${BUILD} ${LIN_BUILD} ${WIN_BUILD} ${MAC_BUILD} ${ARM_BUILD} historical/${BUILD_DATED} builds.md last_repo_version
 cd ${BUILDS}/historical
-find . -mtime +20 -exec git rm {} \; 2>/dev/null 1>&2
-git commit -m "${BUILD_STR}" 2>/dev/null 1>&2
+find . -mtime +20 -exec git rm {} \;
+git commit -m "${BUILD_STR}"
 if [[ "${DRY_RUN}" = "false" ]]; then
-    git push "https://${GITHUB_ACTOR}:${TOKEN_GITHUB}@github.com/${GITHUB_REPOSITORY}.git" 2>/dev/null 1>&2
+    git push "https://${GITHUB_ACTOR}:${TOKEN_GITHUB}@github.com/${GITHUB_REPOSITORY}.git"
 else
     echo "$(ls)"
-    echo.
+    echo ""
     echo "$(unzip -l ${ARM_BUILD})"
 fi
