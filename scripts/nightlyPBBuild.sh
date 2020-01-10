@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 #
 # Copyright (C) 2016-2020 phantombot.tv
 #
