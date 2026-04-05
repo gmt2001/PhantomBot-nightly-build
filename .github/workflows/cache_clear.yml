@@ -48,7 +48,7 @@ jobs:
     - name: Execute Actions
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GH_REPO: ${{ github.event.repository.name }}/${{ github.event.repository.full_name }}
+        GH_REPO: ${{ github.event.repository.full_name }}
         DRY_RUN: ${{ github.event.inputs.dry-run }}
         KEYS: ${{ github.event.inputs.keys }}
         REFS: ${{ github.event.inputs.refs }}
